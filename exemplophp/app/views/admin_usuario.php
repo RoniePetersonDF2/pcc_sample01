@@ -3,7 +3,6 @@
     session_start();
 
     if(!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
-        echo 'oi';
         header("Location: index.php?error=Usuário não tem permissão para acessar esse recurso");
         exit;
     }
