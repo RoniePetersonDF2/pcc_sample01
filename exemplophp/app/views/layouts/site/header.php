@@ -15,7 +15,7 @@
 
     <script type="text/javascript" src="assets/js/modal.js"></script>
     <link href="assets/css/modal.css" rel="stylesheet">
-    <title>PROJETO HTLM MOD 3</title>
+    <title>Projeto PCC</title>
 </head>
 
 <body>

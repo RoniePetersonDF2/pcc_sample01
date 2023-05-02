@@ -9,6 +9,14 @@ require_once 'site/login.php';
 <!--1ª DOBRA-->
 
 <main>
+    
+    <?php
+        if(isset($_GET['error'])) {
+            echo "<div>";
+            echo "<p>". $_GET['error'] . "</p>";
+            echo "</div>";
+        }
+    ?>
     <div class="main_cta">
         <article class="main_cta_content">
             <div class="main_cta_content_spacer">
