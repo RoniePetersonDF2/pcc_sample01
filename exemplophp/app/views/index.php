@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'layouts/site/header.php';
 require_once 'layouts/site/menu.php';
 require_once 'site/login.php';

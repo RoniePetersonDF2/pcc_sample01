@@ -7,7 +7,8 @@
 
         <nav class="main_header_content_menu">
             <ul>
-                <li><a href="../../index.php">Home</a></li>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="logout.php">Sair</a></li>
 
             </ul>
         </nav>

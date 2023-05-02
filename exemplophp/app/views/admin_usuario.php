@@ -1,4 +1,13 @@
-<?php require_once 'layouts/site/header.php';?>
+<?php 
+    require_once 'layouts/site/header.php';
+    session_start();
+
+    if(!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
+        echo 'oi';
+        header("Location: index.php?error=Usuário não tem permissão para acessar esse recurso");
+        exit;
+    }
+?>
 <body>
     <?php require_once 'layouts/admin/menu.php';?>
     
