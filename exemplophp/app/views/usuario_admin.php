@@ -23,7 +23,7 @@
                         <header>
                             
                             <p align="center">
-                                <a href="produtos.html"><img src="assets/img/cadastro.png" width="200"></a></p>
+                                <a href="site/produtos.html"><img src="assets/img/cadastro.png" width="200"></a></p>
                                
                         </header>
                     </article>

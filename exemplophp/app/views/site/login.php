@@ -21,7 +21,7 @@
                 'nome' => $row['nome'],
                 'perfil' => $row['perfil'],
             ];
-            header('location: admin_usuario.php');
+            header('location: usuario_admin.php');
         } else {
             session_destroy();
             header('location: index.php?error=Usuário ou senha inválidos.');
