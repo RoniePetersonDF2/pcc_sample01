@@ -23,7 +23,7 @@
                         <header>
                             
                             <p align="center">
-                                <a href="usuario_admin_add.php"><img src="assets/img/cadastro.png" width="200"></a></p>
+                                <a href="#"><img src="assets/img/cadastro.png" width="200"></a></p>
                                
                         </header>
                     </article>
@@ -31,7 +31,7 @@
                         <h2 align="center">Alterar dados</h2>
                         <header>
                             
-                            <p align="center"><a href="usuario_admin_list.php"><img src="assets/img/listar.png" width="350"></a></p>
+                            <p align="center"><a href="#"><img src="assets/img/listar.png" width="350"></a></p>
                             
                         </header>
                     </article>
