@@ -12,10 +12,11 @@
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/fonticon.css" rel="stylesheet">
     <link href="assets/css/login.css" rel="stylesheet">
+    <link href="assets/css/lista.css" rel="stylesheet">
 
     <script type="text/javascript" src="assets/js/modal.js"></script>
     <link href="assets/css/modal.css" rel="stylesheet">
-    <title>PROJETO HTLM MOD 3</title>
+    <title>Projeto PCC</title>
 </head>
 
 <body>
