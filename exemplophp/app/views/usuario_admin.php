@@ -1,7 +1,13 @@
 <?php 
-    require_once 'layouts/site/header.php';
+    # para trabalhar com sessões sempre iniciamos com session_start.
     session_start();
-
+    
+    # inclui o arquivo header
+    require_once 'layouts/site/header.php';
+    
+    # verifica se existe sessão de usuario e se ele é administrador.
+    # se não existir redireciona o usuario para a pagina principal com uma mensagem de erro.
+    # sai da pagina.
     if(!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
         header("Location: index.php?error=Usuário não tem permissão para acessar esse recurso");
         exit;
