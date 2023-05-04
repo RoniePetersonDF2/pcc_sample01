@@ -44,7 +44,7 @@
         # se sim, redireciona para a pagina de admin com mensagem de sucesso.
         # se não, redireciona para a pagina de cadastro com mensagem de erro.
         if($stmt->rowCount()) {
-            header('location: usuario_admin.php?msg=Usuário inserido com sucesso!');
+            header('location: usuario_admin.php?success=Usuário inserido com sucesso!');
         } else {
             header('location: usuario_admin_add.php?error=Erro ao inserir usuário!');
         }
@@ -55,10 +55,20 @@
 ?>
 <body>
     <?php require_once 'layouts/admin/menu.php';?>
-    
     <main>
         <div class="main_opc">
-
+            <?php
+                # verifca se existe uma mensagem de erro enviada via GET.
+                # se sim, exibe a mensagem enviada no cabeçalho.
+                if(isset($_GET['error'])) { ?>
+                    <script>
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Usuários',
+                        text: '<?=$_GET['error'] ?>',
+                        })
+                    </script>
+            <?php } ?>
             <section >
                <form action="" method="post" class="box">
                     <label for="email">E-mail</label><br>
@@ -83,8 +93,7 @@
             </div>
 
     </main>
-    <!--FIM DOBRA PALCO PRINCIPAL-->
-
+    
 </body>
 
 

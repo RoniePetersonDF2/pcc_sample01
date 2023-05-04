@@ -17,12 +17,22 @@
     <?php require_once 'layouts/admin/menu.php';?>
     
     <main>
+    <?php
+        # verifca se existe uma mensagem de sucesso enviada via GET.
+        # se sim, exibe a mensagem enviada no cabeçalho.
+        if(isset($_GET['success'])) { ?>
+            <script>
+                Swal.fire({
+                icon: 'success',
+                title: 'Usuários',
+                text: '<?=$_GET['success'] ?>',
+                })
+            </script>
+    <?php } ?>
         <div class="main_opc">
 
             <section class="main_course" id="escola">
-                <header class="main_course_header">
-
-                </header>
+                
                 <div class="main_course_content">
                     <article>
                         <h2 align="center">Cadastrar dados</h2>
