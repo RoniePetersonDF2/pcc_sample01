@@ -2,14 +2,14 @@
     # para trabalhar com sessões sempre iniciamos com session_start.
     session_start();
     
-    # inclui os arquivos header e classe de conexão com o banco de dados.
+    # inclui o arquivo header e a classe de conexão com o banco de dados.
     require_once 'layouts/site/header.php';
-    require_once "../models/database/conexao.php";
+    require_once "../database/conexao.php";
 
     # verifica se existe sessão de usuario e se ele é administrador.
     # se não existir redireciona o usuario para a pagina principal com uma mensagem de erro.
     # sai da pagina.
-    if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
+    if(!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
         header("Location: index.php?error=Usuário não tem permissão para acessar esse recurso");
         exit;
     }
