@@ -15,6 +15,7 @@
     <link href="assets/css/lista.css" rel="stylesheet">
 
     <script type="text/javascript" src="assets/js/modal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="assets/css/modal.css" rel="stylesheet">
     <title>Projeto PCC</title>
 </head>

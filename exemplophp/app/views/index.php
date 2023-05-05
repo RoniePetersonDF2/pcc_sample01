@@ -15,14 +15,17 @@
 <main>
     
     <?php
-        # verifica se a variavel $_GET error existe. Se sim, exibe mensagem de error.
-        # se não passa direto.
-        if(isset($_GET['error'])) {
-            echo "<div>";
-            echo "<p>". $_GET['error'] . "</p>";
-            echo "</div>";
-        }
-    ?>
+        # verifca se existe uma mensagem de erro enviada via GET.
+        # se sim, exibe a mensagem enviada no cabeçalho.
+        if(isset($_GET['error'])) { ?>
+            <script>
+                Swal.fire({
+                icon: 'error',
+                title: 'Usuários',
+                text: '<?=$_GET['error'] ?>',
+                })
+            </script>
+    <?php } ?>
     <div class="main_cta">
         <article class="main_cta_content">
             <div class="main_cta_content_spacer">
