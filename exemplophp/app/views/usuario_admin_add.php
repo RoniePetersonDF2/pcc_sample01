@@ -72,9 +72,9 @@
             <section >
                <form action="" method="post" class="box">
                     <label for="email">E-mail</label><br>
-                    <input type="email" name="email" placeholder="Informe seu e-mail." autofocus ><br><br>
+                    <input type="email" name="email" placeholder="Informe seu e-mail." required autofocus ><br><br>
                     <label for="nome">Nome</label><br>
-                    <input type="text" name="nome" placeholder="Informe seu nome."><br><br>
+                    <input type="text" name="nome" placeholder="Informe seu nome." required><br><br>
                     <label for="perfil">Perfil</label><br>
                     <select name="perfil"><br><br>
                         <option value="USU">Usuário</option>
