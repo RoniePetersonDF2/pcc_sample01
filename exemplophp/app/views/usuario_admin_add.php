@@ -76,7 +76,7 @@
                     <label for="nome">Nome</label><br>
                     <input type="text" name="nome" placeholder="Informe seu nome."><br><br>
                     <label for="perfil">Perfil</label><br>
-                    <select name="pefil"><br><br>
+                    <select name="perfil"><br><br>
                         <option value="USU">Usuário</option>
                         <option value="EDI">Editor</option>
                         <option value="GER">Gerente</option>
