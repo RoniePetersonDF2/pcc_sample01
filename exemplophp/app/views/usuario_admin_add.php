@@ -70,7 +70,7 @@
                     </script>
             <?php } ?>
             <section >
-               <form action="" method="post" class="box">
+               <form action="" method="post" class="novo__form">
                     <label for="email">E-mail</label><br>
                     <input type="email" name="email" placeholder="Informe seu e-mail." required autofocus ><br><br>
                     <label for="nome">Nome</label><br>
@@ -86,7 +86,7 @@
                     <select name="status"><br><br>
                         <option value="1">Ativo</option>
                         <option value="0">Inativo</option>
-                    </select><br><br>
+                    </select>
                     <input type="submit" value="Salvar" name="salvar">
                </form>
             </section>

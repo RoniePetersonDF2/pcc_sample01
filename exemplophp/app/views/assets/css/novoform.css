@@ -1,0 +1,26 @@
+.novo__form {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 30px;
+    box-sizing: border-box;
+    width: 80vw;
+}
+
+.novo__form label {
+    padding: 0;
+    margin-bottom: -30px;
+}
+.novo__form input, select, label {
+    height: 35px;
+    margin-bottom: -20px;
+}
+
+.novo__form input[type="submit"] {
+    margin-top: 50px;
+    border: 1px solid #035c97;
+    background-color: #035c97;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
