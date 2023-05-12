@@ -17,12 +17,12 @@
     <?php
         # verifca se existe uma mensagem de erro enviada via GET.
         # se sim, exibe a mensagem enviada no cabeçalho.
-        if(isset($_GET['error'])) { ?>
+        if(isset($_GET['error']) || isset($_GET['success']) ) { ?>
             <script>
                 Swal.fire({
-                icon: 'error',
+                icon: <?php (isset($_GET['error']) ? 'error' : 'success');?>,
                 title: 'Usuários',
-                text: '<?=$_GET['error'] ?>',
+                text: '<?php (($_GET['error']) ? $_GET['error']: $_GET['success']); ?>',
                 })
             </script>
     <?php } ?>

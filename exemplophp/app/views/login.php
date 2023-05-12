@@ -60,7 +60,7 @@
         </form>
         
         <div class="novo__form__login">
-            <a href="#">Criar conta</a>
+            <a href="usuario_admin_new.php">Criar conta</a>
             <a href="#">Esqueceu sua senha?</a>
         </div>
     </div>

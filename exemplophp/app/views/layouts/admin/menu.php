@@ -17,9 +17,7 @@
                         echo "<li><a href='logout.php'>Sair</a></li>";
                     } else if(isset($_SESSION['usuario'])) {
                         echo "<li><a href='logout.php'>Sair</a></li>";
-                    } else {
-                        echo "<li><a href='#' class='modal-link'>Login</a>";                
-                    }
+                    } 
                 ?>
             </ul>
         </nav>
