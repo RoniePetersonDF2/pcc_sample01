@@ -58,6 +58,11 @@
             <br><br>
             <button class="button">Enviar</button>
         </form>
+        
+        <div class="novo__form__login">
+            <a href="#">Criar conta</a>
+            <a href="#">Esqueceu sua senha?</a>
+        </div>
     </div>
 
 </div>

@@ -31,3 +31,17 @@
     font-weight: 600;
     font-size: 1.1rem;
 }
+
+.novo__form__login {
+    display: flex;
+    box-sizing: border-box;
+}
+.novo__form__login a {
+    color:#fff;
+    font-weight: 500;
+    margin-top:20px;
+    margin-right: 2px;
+}
+.novo__form__login a:hover {
+    font-size: 1.1rem;
+}
