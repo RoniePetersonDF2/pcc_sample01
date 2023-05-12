@@ -69,8 +69,11 @@
                         })
                     </script>
             <?php } ?>
-            <section >
-               <form action="" method="post" class="novo__form">
+            <section>
+                <div class="novo__form__titulo">
+                    <h2>Cadastro de Usuários</h2>
+                </div>
+                <form action="" method="post" class="novo__form">
                     <label for="email">E-mail</label><br>
                     <input type="email" name="email" placeholder="Informe seu e-mail." required autofocus ><br><br>
                     <label for="nome">Nome</label><br>

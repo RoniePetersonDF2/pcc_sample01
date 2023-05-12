@@ -1,3 +1,10 @@
+.novo__form__titulo {
+    font-size: 1.9rem;
+    font-weight: 200;
+    text-align: center;
+    width: 100vw;
+    margin: 20px 0;
+}
 .novo__form {
     display: flex;
     flex-direction: column;
