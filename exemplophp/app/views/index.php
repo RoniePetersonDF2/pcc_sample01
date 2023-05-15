@@ -20,9 +20,9 @@
         if(isset($_GET['error']) || isset($_GET['success']) ) { ?>
             <script>
                 Swal.fire({
-                icon: <?php (isset($_GET['error']) ? 'error' : 'success');?>,
+                icon: '<?php echo (isset($_GET['error']) ? 'error' : 'success');?>',
                 title: 'Usuários',
-                text: '<?php (($_GET['error']) ? $_GET['error']: $_GET['success']); ?>',
+                text: '<?php echo (isset($_GET['error']) ? $_GET['error']: $_GET['success']); ?>',
                 })
             </script>
     <?php } ?>

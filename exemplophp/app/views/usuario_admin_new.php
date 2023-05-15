@@ -13,7 +13,7 @@
         $nome = isset($_POST['nome']) ? $_POST['nome'] : '';
         $password = isset($_POST['password']) ? $_POST['password'] : '';
         $perfil = 'USU';
-        $status = 0;
+        $status = 1;
         
         # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
         $dbh = Conexao::getInstance();
