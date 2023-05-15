@@ -51,6 +51,7 @@
         <p>ETC - Todos os direitos reservados.</p>
     </footer>
     <!--FIM DOBRA RODAPE-->
+    <script type="text/javascript" src="assets/js/modal.js"></script>    
 </body>
 <script>
     // Seleciona o link e a janela modal
