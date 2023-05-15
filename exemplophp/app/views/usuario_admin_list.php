@@ -115,7 +115,7 @@
                                             <td><?=($row['status'] == '1' ? 'Ativo': 'Inativo')?></td>
                                             <td>
                                                 <div style="display:flex;">
-                                                    <button class="btn">Editar</button>&nbsp;
+                                                    <a href="usuario_admin_upd.php?id=<?=$row['id']?>" class="btn">Editar</a>&nbsp;
                                                     <form action="" method="post">
                                                         <input type="hidden" name="id" value="<?=$row['id']?>"/>
                                                         <button class="btn" 
