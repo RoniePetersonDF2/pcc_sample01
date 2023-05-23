@@ -14,6 +14,9 @@
         exit;
     }
 
+    # verifica se uma variavel id foi passada via GET 
+    $id = isset($_GET['id']) ? $_GET['id'] : 0;
+
     # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
     $dbh = Conexao::getInstance();
     
@@ -23,17 +26,20 @@
         $nome = isset($_POST['nome']) ? $_POST['nome'] : '';
         $status = isset($_POST['status']) ? $_POST['status'] : 0;
         $tipo = isset($_POST['tipo']) ? $_POST['tipo'] : 'ART';
-        
-
-        # cria um comando SQL para adicionar valores na tabela categorias 
-        $query = "INSERT INTO `pccsampledb`.`categorias` (`nome`,`status`, `tipo`)
-                    VALUES (:nome, :status, :tipo)";
+    
+        # cria um comando SQL para alterar ou modificar valores na tabela  
+        $query = "UPDATE `pccsampledb`.`categorias` SET 
+                    `nome` = :nome,
+                    `status` = :status, 
+                    `tipo` = :tipo
+                    WHERE id = :id";
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':tipo', $tipo);
+        $stmt->bindParam(':id', $id);
 
-        # executa o comando SQL para inserir o resultado.
+        # executa o comando SQL.
         $stmt->execute();
 
         # verifica se a quantiade de registros inseridos é maior que zero.
@@ -46,6 +52,26 @@
         }
     }
 
+    # cria uma consulta banco de dados buscando todos os dados  
+    # filtrando pelo id do usuário.
+    $query = "SELECT * FROM `pccsampledb`.`categorias` WHERE id=:id LIMIT 1";
+    $stmt = $dbh->prepare($query);
+    $stmt->bindParam(':id', $id);
+
+    # executa a consulta banco de dados e aguarda o resultado.
+    $stmt->execute();
+    
+    # Faz um fetch para trazer os dados existentes, se existirem, em um array na variavel $row.
+    # se não existir retorna null
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    
+    # se o resultado retornado for igual a NULL, redireciona para a pagina de listar usuario.
+    # se não, cria a variavel row com dados do usuario selecionado.
+    if(!$row){
+        header('location: categoria_index.php?error=Categoria inválida.');
+    }
+    
     # destroi a conexao com o banco de dados.
     $dbh = null;
 ?>
@@ -67,22 +93,26 @@
             <?php } ?>
             <section class="novo__form__section">
                 <div class="novo__form__titulo">
-                    <h2>Cadastro de Categorias</h2>
+                    <h2>Atualizar Categorias</h2>
                 </div>
                 <form action="" method="post" class="novo__form">
+                    <input type="hidden" name="id" value="<?=isset($row)? $row['id'] : ''?>">
                     <div>
                         <label for="nome">Nome</label><br>
-                        <input type="text" name="nome" placeholder="Informe seu nome."  required><br><br>
+                        <input type="text" name="nome" 
+                                value="<?=isset($row)? $row['nome'] : ''?>"
+                                placeholder="Informe seu nome."  
+                                required><br><br>
                     </div>
                     <label for="status">Status</label><br>
                     <select name="status"><br><br>
-                        <option value="1">Ativo</option>
-                        <option value="0">Inativo</option>
+                        <option value="1" <?=isset($row) && $row['status'] == '1'? 'selected' : ''?>>Ativo</option>
+                        <option value="0" <?=isset($row) && $row['status'] == '0'? 'selected' : ''?>>Inativo</option>
                     </select><br><br>
                     <label for="tipo">Tipo</label><br>
                     <select name="tipo"><br><br>
-                        <option value="ART">Artigos</option>
-                        <option value="CUR">Cursos</option>
+                        <option value="ART" <?=isset($row) && $row['tipo'] == '1'? 'selected' : ''?>>Artigos</option>
+                        <option value="CUR" <?=isset($row) && $row['tipo'] == '1'? 'selected' : ''?>>Cursos</option>
                     </select>
 
                     <input type="submit" value="Salvar" name="salvar">

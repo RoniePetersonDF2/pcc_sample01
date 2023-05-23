@@ -61,7 +61,7 @@
                         })
                     </script>
             <?php } ?>
-            <section>
+            <section class="novo__form__section">
                 <div class="novo__form__titulo">
                     <h2>Nova Conta</h2>
                 </div>

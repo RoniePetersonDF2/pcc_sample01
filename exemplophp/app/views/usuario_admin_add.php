@@ -86,7 +86,7 @@
                         })
                     </script>
             <?php } ?>
-            <section>
+            <section class="novo__form__section">
                 <div class="novo__form__titulo">
                     <h2>Cadastro de Usuários</h2>
                 </div>

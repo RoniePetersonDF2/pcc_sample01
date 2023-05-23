@@ -4,30 +4,33 @@
     text-align: center;
     margin: 20px 0;
 }
-.novo__form {
+
+.novo__form__section {
     margin: 0 auto;
-    padding: 0;
-    /* display: flex; */
-    /* flex-direction: column;
-    margin-top: 30px;
-    box-sizing: border-box;*/
-    width:90vw; 
+    width: 90vw;
 }
 
 
-.novo__form input, select {
+.novo__form__section input, select {
     height: 35px;
-    border-color: #035c97;
-    width: 100vw;
+    border: 1px solid #035c97;
+    width: 100%;
+    margin-top: 10px;
 }
 
-/* .novo__form input[type="submit"] {
-    margin-top: 50px;
+.novo__form__section input[type="submit"] {
     border: 1px solid #035c97;
     background-color: #035c97;
     color: #fff;
     font-weight: 600;
     font-size: 1.1rem;
+    margin-top: 25px;
+}
+
+.novo__form__section input[type="submit"]:hover {
+    background-color: #167bbe;
+    color: #fff;
+    font-size: 1.3rem;
 }
 
 .novo__form__login {
@@ -43,4 +46,4 @@
 }
 .novo__form__login a:hover {
     font-size: 1.1rem;
-} */
+} 

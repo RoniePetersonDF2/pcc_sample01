@@ -36,9 +36,9 @@
             # se sim, redireciona para a pagina de admin com mensagem de sucesso.
             # se não, redireciona para a pagina de admin com mensagem de erro.
             if($stmt->rowCount()) {
-                header('location: usuario_admin_list.php?success=Usuário excluído com sucesso!');
+                header('location: categoria_index.php?success=Categoria excluída com sucesso!');
             } else {
-                header('location: usuario_admin_list.php?error=Erro ao excluir usuário!');
+                header('location: categoria_index.php?error=Erro ao excluir categoria!');
             }
         }
 
@@ -70,7 +70,7 @@
             <script>
                 Swal.fire({
                 icon: '<?php echo (isset($_GET['error']) ? 'error' : 'success');?>',
-                title: 'Usuários',
+                title: 'Categorias',
                 text: '<?php echo (isset($_GET['error']) ? $_GET['error']: $_GET['success']); ?>',
                 })
             </script>
@@ -113,13 +113,13 @@
                                             <td><?=($row['status'] == '1' ? 'Ativo': 'Inativo')?></td>
                                             <td>
                                                 <div style="display: flex;">
-                                                    <a href="usuario_admin_upd.php?id=<?=$row['id']?>" class="btn">Editar</a>&nbsp;
+                                                    <a href="categoria_edit.php?id=<?=$row['id']?>" class="btn">Editar</a>&nbsp;
                                                     <form action="" method="post">
                                                         <input type="hidden" name="id" value="<?=$row['id']?>"/>
                                                         <button class="btn" 
                                                                 name="botao" 
                                                                 value="deletar"
-                                                                onclick="return confirm('Deseja excluir o usuário?');"
+                                                                onclick="return confirm('Deseja excluir o categoria?');"
                                                                 >Apagar</button>
                                                     </form>
 
@@ -127,7 +127,7 @@
                                             </td>
                                         </tr>    
                                         <?php $count++;} } else {?>
-                                    <tr><td colspan="4"><strong>Não existem artigos cadastrados.</strong></td></tr>
+                                    <tr><td colspan="4"><strong>Não existem categorias cadastradas.</strong></td></tr>
                                 <?php }?>
                             </table>
 
