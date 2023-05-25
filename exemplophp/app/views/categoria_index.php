@@ -17,7 +17,7 @@
     # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
     $dbh = Conexao::getInstance();
 
-     # verifica se os dados do formulario foram enviados via POST 
+    # verifica se os dados do formulario foram enviados via POST 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
         # recupera o id do enviado por post para delete ou update.
         $id = (isset($_POST['id']) ? $_POST['id'] : 0);
@@ -113,7 +113,7 @@
                                             <td><?=($row['status'] == '1' ? 'Ativo': 'Inativo')?></td>
                                             <td>
                                                 <div style="display: flex;">
-                                                    <a href="categoria_edit.php?id=<?=$row['id']?>" class="btn">Editar</a>&nbsp;
+                                                    <a href="#" class="btn">Editar</a>&nbsp;
                                                     <form action="" method="post">
                                                         <input type="hidden" name="id" value="<?=$row['id']?>"/>
                                                         <button class="btn" 
