@@ -9,7 +9,7 @@
     # verifica se existe sessão de usuario e se ele é administrador.
     # se não existir redireciona o usuario para a pagina principal com uma mensagem de erro.
     # sai da pagina.
-    if(!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
+    if(!isset($_SESSION['usuario']) || ($_SESSION['usuario']['perfil'] != 'ADM' && $_SESSION['usuario']['perfil'] != 'GER' )) {
         header("Location: index.php?error=Usuário não tem permissão para acessar esse recurso");
         exit;
     }
@@ -17,32 +17,6 @@
     # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
     $dbh = Conexao::getInstance();
 
-     # verifica se os dados do formulario foram enviados via POST 
-    if($_SERVER['REQUEST_METHOD'] == 'POST') {
-        # recupera o id do enviado por post para delete ou update.
-        $id = (isset($_POST['id']) ? $_POST['id'] : 0);
-        $operacao = (isset($_POST['botao']) ? $_POST['botao'] : null);
-        # verifica se o nome do botão acionado por post se é deletar ou atualizar
-        if($operacao === 'deletar'){
-            # cria uma query no banco de dados para excluir o usuario com id informado 
-            $query = "DELETE FROM `pccsampledb`.`categorias` WHERE id = :id";
-            $stmt = $dbh->prepare($query);
-            $stmt->bindParam(':id', $id);
-            
-            # executa a consulta banco de dados para excluir o registro.
-            $stmt->execute();
-
-            # verifica se a quantiade de registros excluido é maior que zero.
-            # se sim, redireciona para a pagina de admin com mensagem de sucesso.
-            # se não, redireciona para a pagina de admin com mensagem de erro.
-            if($stmt->rowCount()) {
-                header('location: categoria_index.php?success=Categoria excluída com sucesso!');
-            } else {
-                header('location: categoria_index.php?error=Erro ao excluir categoria!');
-            }
-        }
-
-    } 
     # cria uma consulta banco de dados buscando todos os dados da tabela usuarios 
     # ordenando pelo campo perfil e nome.
     $query = "SELECT * FROM `pccsampledb`.`categorias` ORDER BY tipo, nome";
@@ -113,16 +87,8 @@
                                             <td><?=($row['status'] == '1' ? 'Ativo': 'Inativo')?></td>
                                             <td>
                                                 <div style="display: flex;">
-                                                    <a href="categoria_edit.php?id=<?=$row['id']?>" class="btn">Editar</a>&nbsp;
-                                                    <form action="" method="post">
-                                                        <input type="hidden" name="id" value="<?=$row['id']?>"/>
-                                                        <button class="btn" 
-                                                                name="botao" 
-                                                                value="deletar"
-                                                                onclick="return confirm('Deseja excluir o categoria?');"
-                                                                >Apagar</button>
-                                                    </form>
-
+                                                    <a href="#" class="btn">Editar</a>&nbsp;
+                                                    <a href="#" class="btn">Apagar</a>
                                                 </div>
                                             </td>
                                         </tr>    
