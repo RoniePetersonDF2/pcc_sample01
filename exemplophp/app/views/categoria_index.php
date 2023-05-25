@@ -9,7 +9,7 @@
     # verifica se existe sessão de usuario e se ele é administrador.
     # se não existir redireciona o usuario para a pagina principal com uma mensagem de erro.
     # sai da pagina.
-    if(!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] != 'ADM') {
+    if(!isset($_SESSION['usuario']) || ($_SESSION['usuario']['perfil'] != 'ADM' && $_SESSION['usuario']['perfil'] != 'GER' )) {
         header("Location: index.php?error=Usuário não tem permissão para acessar esse recurso");
         exit;
     }
