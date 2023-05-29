@@ -56,7 +56,7 @@
                     <div>
                         <button class="btn"
                             style="min-height: 40px; margin-bottom: 10px;"
-                            onclick="javascript:window.location='artigo_create.php'"
+                            onclick="javascript:window.location='#'"
                             >Novo Artigo</button>
                     </div>
                     <article>
@@ -87,7 +87,7 @@
                                             <td><?=($row['status'] == '1' ? 'Publicado': 'Em Edição')?></td>
                                             <td>
                                                 <div style="display: flex;">
-                                                    <a href="artigo_edit.php?id=<?=$row['id']?>" class="btn">Editar</a>&nbsp;
+                                                    <a href="#" class="btn">Editar</a>&nbsp;
                                                     <form action="" method="post">
                                                         <input type="hidden" name="id" value="<?=$row['id']?>"/>
                                                         <button class="btn" 
