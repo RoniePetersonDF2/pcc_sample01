@@ -30,6 +30,7 @@
             $_SESSION['usuario'] = [
                 'nome' => $row['nome'],
                 'perfil' => $row['perfil'],
+                'id' => $row['id'],                
             ];
             if($row['perfil'] === 'ADM') {
                 header('location: usuario_admin.php');

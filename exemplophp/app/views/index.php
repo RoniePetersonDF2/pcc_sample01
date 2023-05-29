@@ -8,15 +8,29 @@
     require_once 'login.php';
     require_once "../database/conexao.php";
 
-     # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
-     $dbh = Conexao::getInstance();
-
+    # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
+    $dbh = Conexao::getInstance();
+    
+    # cria variavel que recebe parametro da categoria
+    # se foi passado via get quando o campo select do
+    # formulario é modificado.    
+    $filtroCategoria = isset($_GET['categoria']) ? $_GET['categoria'] : null;
+    
+    
     # cria uma consulta banco de dados buscando todos os dados da tabela  
-    # ordenando pelo campo data.
+    # ordenando pelo campo data e limita o resultado a 10 registros.
     $query = "SELECT art.*, cat.nome as categoria 
                 FROM `pccsampledb`.`artigos` AS art 
                 INNER JOIN `pccsampledb`.`categorias` AS cat ON cat.id = art.categoria_id
-                ORDER BY art.data_publicacao DESC limit 8";
+                WHERE art.status = 1";
+    # verifica se existe filtro para categoria.
+    # se sim adiciona condição ao select.
+    if($filtroCategoria != null && $filtroCategoria != "0") {
+        $query .= " AND cat.id = '" .$filtroCategoria . "' ";    
+    }
+
+    $query .= " ORDER BY art.data_publicacao DESC limit 10";
+
     $stmt = $dbh->prepare($query);
     
     # executa a consulta banco de dados e aguarda o resultado.
@@ -25,8 +39,21 @@
     # Faz um fetch para trazer os dados existentes, se existirem, em um array na variavel $row.
     # se não existir retorna null
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    # cria uma consulta banco de dados buscando todos os dados da tabela  
+    # ordenando pelo campo nome da categoria.
+    $query = "SELECT * 
+                FROM `pccsampledb`.`categorias` 
+                ORDER BY nome";
+    $stmt = $dbh->prepare($query);
     
-    // echo '<pre>';var_dump($rows);exit;
+    # executa a consulta banco de dados e aguarda o resultado.
+    $stmt->execute();
+    
+    # Faz um fetch para trazer os dados existentes, se existirem, em um array na variavel $row.
+    # se não existir retorna null
+    $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     # destroi a conexao com o banco de dados.
     $dbh = null;
 ?>
@@ -68,10 +95,24 @@
         <header class="main_blog_header">
             <h1 class="icon-blog">Nosso Últimos Artigos</h1>
             <p>Aqui você encontra os artigos necessários para auxiliar na sua caminhada web.</p>
+            <!-- cria o campo select com os dados da consulta 
+                realizada na tabela de categorias -->
+            <select name="categorias" onchange="filtroPorCategoria(this.value);">
+                <option value="0">Todas as categorias</option>
+                <?php 
+                    foreach($categorias as $categoria) {
+                        echo "<option value='" 
+                        . $categoria['id'] ."'"
+                        .($filtroCategoria == $categoria['id'] ? ' selected': '') . ">" 
+                        . $categoria['nome'] 
+                        . "</option>";
+                    }
+                ?>
+            </select>    
         </header>
-        <?php foreach ($rows as $row){ ?>
+        <?php if($rows) { foreach ($rows as $row){ ?>
             <article>
-                <a href="#">
+                <a href="artigo_show.php?id=<?=$row['id'];?>">
                      <?php
                         $imagem = $row['imagem'] == '' ? "assets/img/post.jpg" : $row['imagem'];                        
                      ?>   
@@ -80,320 +121,28 @@
                 <p><a href="#" class="category"><?=$row['titulo']?></a> || <a href="#" class="category"><?=$row['categoria']?></a></p>
                 <h2 class="title"><?=$row['texto']?></h2>
             </article>
-        <?php } ?>
+        <?php } } else { echo "<p>Não existem artigos cadastrados</p>"; } ?>
     </section>
 
     <!--FIM SESSÃO SESSÃO DE ARTIGOS-->
 
-    <!--INICIO SESSÃO OPTIN-->
-    <article class="opt_in">
-        <div class="opt_in_content">
-            <header>
-                <h1>Quer receber todas as novidades em seu e-mail?</h1>
-                <p>Informe o seu nome e e-mail no campo ao lado e clique em Ok!</p>
-            </header>
-            <form>
-                <input type="text" placeholder="Seu nome">
-                <input type="email" placeholder="Seu email">
-                <button type="submit">Ok</button>
-            </form>
-        </div>
-    </article>
-
-    <!--FIM SESSÃO OPTIN-->
-
-    <!-- INICIO SESSÃO DOBRA  CURSOS-->
-    <section class="main_course" id="escola">
-        <header class="main_course_header">
-            <img src="assets/img/logo.png" alt="img" title="img">
-            <h1 class="icon-books">HTML5 e CSS3 Essentials</h1>
-            <p>Aprenda a trabalhar com HTML5 e CSS3 para desenvolver seus projetos e entregar páginas que
-                estejam dentro dos padrões da Web seguindo as boas práticas.</p>
-        </header>
-        <div class="main_course_content">
-            <article>
-                <header>
-                    <h2>Curso 100% Online</h2>
-                    <p>Todas as aulas são gravadas em estúdio profissional para que você tenha a máxima qualidade de
-                        imagem e video</p>
-                </header>
-            </article>
-            <article>
-                <header>
-                    <h2>Suporte Especializado</h2>
-                    <p>Este curso possui suporte diretamente com um profissional da nossa equipe oficial</p>
-                </header>
-            </article>
-            <article>
-                <header>
-                    <h2>Mais de 100 aulas divididas em 10 módulos</h2>
-                    <p>A modularização que você precisa para compreender de maneira mais objetiva</p>
-                </header>
-            </article>
-            <article>
-                <header>
-                    <h2>Certificado reconhecido em mais de 17 países</h2>
-                    <p>Ao concluir o curso você terá um certificado com reconhecimento em diversos países da América
-                        Latina</p>
-                </header>
-            </article>
-        </div>
-        <!-- FIM SESSÃO DOBRA  CURSOS-->
-
-        <!--INICIO DOBRA REVIEWS-->
-        <div class="main_course_fullwidth">
-            <div class="main_course_ratting_content">
-                <article class="main_course_rating_title">
-                    <header>
-                        <h2>Curso considerado 5 estrelas por nossos 100 alunos matriculados</h2>
-                    </header>
-                    <img src="assets/img/star.png" alt="Estrela" title="Estrela">
-                    <img src="assets/img/star.png" alt="Estrela" title="Estrela">
-                    <img src="assets/img/star.png" alt="Estrela" title="Estrela">
-                    <img src="assets/img/star.png" alt="Estrela" title="Estrela">
-                    <img src="assets/img/star.png" alt="Estrela" title="Estrela">
-                </article>
-
-                <section class="main_course_ratting_content_comment">
-                    <header>
-                        <h2>Veja o que estão falando sobre o curso</h2>
-                    </header>
-                    <article>
-                        <header>
-                            <h3> Instrutor Web</h3>
-                            <p>03/03/2023</p>
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                        </header>
-                        <p>O conteúdo é fantático, eu não tinha conhecimento nenhum e agora estou desenvolvendo
-                            minhas
-                            páginas em html5 e Css3</p>
-                    </article>
-
-                    <article>
-                        <header>
-                            <h3> Instrutor Web</h3>
-                            <p>03/03/2023</p>
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                        </header>
-                        <p>O conteúdo é fantático, eu não tinha conhecimento nenhum e agora estou desenvolvendo
-                            minhas
-                            páginas em html5 e Css3</p>
-                    </article>
-
-                    <article>
-                        <header>
-                            <h3> Instrutor Web</h3>
-                            <p>03/03/2023</p>
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                        </header>
-                        <p>O conteúdo é fantático, eu não tinha conhecimento nenhum e agora estou desenvolvendo
-                            minhas
-                            páginas em html5 e Css3</p>
-                    </article>
-
-                    <article>
-                        <header>
-                            <h3> Instrutor Web</h3>
-                            <p>03/03/2023</p>
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                        </header>
-                        <p>O conteúdo é fantático, eu não tinha conhecimento nenhum e agora estou desenvolvendo
-                            minhas
-                            páginas em html5 e Css3</p>
-                    </article>
-
-                    <article>
-                        <header>
-                            <h3> Instrutor Web</h3>
-                            <p>03/03/2023</p>
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                        </header>
-                        <p>O conteúdo é fantático, eu não tinha conhecimento nenhum e agora estou desenvolvendo
-                            minhas
-                            páginas em html5 e Css3</p>
-                    </article>
-
-                    <article>
-                        <header>
-                            <h3> Instrutor Web</h3>
-                            <p>03/03/2023</p>
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                            <img src="assets/img/star.png" alt="Imagem" title="Imagem">
-                        </header>
-                        <p>O conteúdo é fantático, eu não tinha conhecimento nenhum e agora estou desenvolvendo
-                            minhas
-                            páginas em html5 e Css3</p>
-                    </article>
-                </section>
-            </div>
-        </div>
-    </section>
-    <!--DOBRA A ESCOLA-->
-    <div class="main_school">
-        <section class="main_school_content">
-            <header class="main_school_header">
-                <h1>Bem vindo a ETC - Escola técnica de Ceilândia</h1>
-                <p>A sua Escola de programação e Marketing Digital</p>
-            </header>
-            <div class="main_school_content_left">
-                <article class="main_school_content_left_content">
-                    <header>
-                        <p>
-                            <span class="icon-facebook"><a href="#">Facebook</a>&nbsp;</span><span class="icon-google-plus2"><a href="#">Google+</a></span>&nbsp;<span class="icon-twitter"><a href="#">Twitter</a></span>
-                        </p>
-                        <h2>Tudo o que você precisa para ser um Webmaster FullStack em um só lugar</h2>
-                    </header>
-                    <p>Desde 1980 a ETC - vem criando os melhores cursos do mercado, entregamos ao aluno
-                        conhecimento
-                        prático e testado sem enrolção.Você tem acesso a aulas com a melhor qualidade, recursos que
-                        aceleram seu aprendizado e muito mais...</p>
-                    <p>Que tal estudar, e ter o certificado da escola eleita a melhor do Brasil com reconhecimento
-                        em
-                        mais de 17 países pela Latin American Quality Institute?</p>
-                </article>
-
-
-                <section class="main_school_list">
-                    <header>
-                        <h2>Confira nossos prêmios</h2>
-                    </header>
-                    <article>
-                        <header>
-                            <h3 class="icon-trophy">Qualidade e Excelência - Master Pesquisas</h3>
-                        </header>
-                    </article>
-
-                    <article>
-                        <header>
-                            <h3 class="icon-trophy">Qualidade e Atendimento - Master Pesquisas</h3>
-                        </header>
-                    </article>
-
-                    <article>
-                        <header>
-                            <h3 class="icon-trophy">Prêmio Diamante - Master Pesquisas</h3>
-                        </header>
-                    </article>
-
-                    <article>
-                        <header>
-                            <h3 class="icon-trophy">Estrela do Sul - Master Pesquisas</h3>
-                        </header>
-                    </article>
-
-                    <article>
-                        <header>
-                            <h3 class="icon-trophy">Medalha de Ouro a Excelência - LAQ</h3>
-                        </header>
-                    </article>
-
-                    <article>
-                        <header>
-                            <h3 class="icon-trophy">Brazil Quality Certification - LAQI</h3>
-                        </header>
-                    </article>
-
-                    <article>
-                        <header>
-                            <h3 class="icon-trophy">Melhor Plataforma EAD - Digital Awards</h3>
-                        </header>
-                    </article>
-                </section>
-            </div>
-            <div class="main_school_content_right">
-                <img src="assets/img/upinside.png" width="200" alt="Imagem" title="Imagem">
-            </div>
-            <article class="main_school_adress">
-                <header>
-                    <h2 class="icon-map2">Nos Encontre</h2>
-                </header>
-                <p>St. N, Área Especial QNN 14 - Ceilândia, Brasília - DF</p>
-            </article>
-        </section>
-    </div>
-
-    <!--INICIO DOBRA TUTOR-->
-    <section class="main_tutor" id="contato">
-        <div class="main_tutor_content">
-            <header>
-                <h1>Conheça seu Instrutor WEB, seu tutor nesse curso</h1>
-                <p>EU vou te ajudar a criar sua webpage em Html5 e Css3</p>
-            </header>
-            <div class="main_tutor_content_img">
-                <img src="assets/img/instrutor.png" width="200" title="Instrutor" alt="Instrutor">
-            </div>
-            <article class="main_tutor_content_history">
-                <header>
-                    <h2>Formado em Ciências da Computação e apaixonado pela Web</h2>
-                </header>
-                <p>Como muitos, comecei na programação por conta dos jogos! Com o tempo, o amor pela programação foi
-                    crescendo a ponto de tomar como profissão e me especializar na área. Hoje, com a bagagem que
-                    tenho,
-                    compartilho meu conhecimento com todos os alunos da UpInside Treinamentos
-                </p>
-            </article>
-
-            <section class="main_tutor_social_network">
-                <header>
-                    <h2>Me siga nas redes sociais</h2>
-                </header>
-                <article>
-                    <header>
-                        <h3><a href="#" class="icon-facebook">Meu Facebook</a></h3>
-                    </header>
-
-                </article>
-
-                <article>
-                    <header>
-                        <h3><a href="#" class="icon-facebook2">Minha FanPage</a></h3>
-                    </header>
-
-                </article>
-
-                <article>
-                    <header>
-                        <h3><a href="#" class="icon-google-plus2">Meu Google+</a></h3>
-                    </header>
-
-                </article>
-
-                <article>
-                    <header>
-                        <h3><a href="#" class="icon-instagram">Meu Instagram</a></h3>
-                    </header>
-
-                </article>
-
-
-            </section>
-        </div>
-    </section>
-    <!--FIM DOBRA TUTOR-->
+    <?php 
+        // require_once 'layouts/site/secao_optin.php';
+        // require_once 'layouts/site/secao_cursos.php';
+        // require_once 'layouts/site/secao_review.php';
+        // require_once 'layouts/site/secao_dobra_escola.php';
+        // require_once 'layouts/site/secao_tutor.php';
+        // require_once 'layouts/site/secao_conteudo_exclusivo.php';
+    ?>
+   
+    
+    
 </main>
+<script>
+    function filtroPorCategoria(valorId) {
+        window.location.href="index.php?categoria=" + valorId;
+    }
+</script>
 
 <!-- inclui o arquivo de rodape do site -->
 <?php require_once 'layouts/site/footer.php'; ?>

@@ -15,11 +15,14 @@
                     # por ultimo adiciona somente o link para o login se a sessão não existir. 
                     if (isset($_SESSION['usuario']) && $_SESSION['usuario']['perfil'] == 'ADM')  {
                         echo "<li><a href='usuario_admin.php'>Admin</a></li>";
-                        echo "<li><a href='logout.php'>Sair</a></li>";
-                    } else if(isset($_SESSION['usuario']) && ($_SESSION['usuario']['perfil'] == 'ADM' || $_SESSION['usuario']['perfil'] == 'GER' )) {
+                    } 
+                    if(isset($_SESSION['usuario']) && ($_SESSION['usuario']['perfil'] != 'USU')) {
+                        echo "<li><a href='artigo_index.php'>Artigos</a></li>";
+                    } 
+                    if(isset($_SESSION['usuario']) && ($_SESSION['usuario']['perfil'] == 'ADM' || $_SESSION['usuario']['perfil'] == 'GER')) {
                         echo "<li><a href='categoria_index.php'>Categorias</a></li>";
-                        echo "<li><a href='logout.php'>Sair</a></li>";
-                    } else if(isset($_SESSION['usuario'])) {
+                    } 
+                    if(isset($_SESSION['usuario'])) {
                         echo "<li><a href='logout.php'>Sair</a></li>";
                     } else {
                         echo "<li><a href='login.php' class='modal-link'>Login</a>";                
