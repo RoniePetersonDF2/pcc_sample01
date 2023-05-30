@@ -114,12 +114,20 @@
             <article>
                 <a href="artigo_show.php?id=<?=$row['id'];?>">
                      <?php
-                        $imagem = $row['imagem'] == '' ? "assets/img/post.jpg" : $row['imagem'];                        
+                        $imagem = $row['imagem'] == '' ? "semimagem.jpg" : $row['imagem'];
+                        if($row['imagem_externa'] == '0') {
+                            $imagem = "assets/img/artigos/" . $imagem;
+                        }                          
                      ?>   
                     <img src="<?=$imagem?>" width="250px" height="250px" alt="<?=$row['titulo']?>" title="<?=$row['titulo']?>">
                 </a>
                 <p><a href="#" class="category"><?=$row['titulo']?></a> || <a href="#" class="category"><?=$row['categoria']?></a></p>
-                <h2 class="title"><?=$row['texto']?></h2>
+                <h2 class="title" title="<?=$row['texto']?>">
+                    <?php 
+                        $max = 300;
+                        echo substr($row['texto'], 1, (strlen($row['texto']) <= $max) ? strlen($row['texto']): $max) . '(...)'; 
+                    ?>
+                </h2>
             </article>
         <?php } } else { echo "<p>Não existem artigos cadastrados</p>"; } ?>
     </section>

@@ -19,7 +19,7 @@
 
     # cria uma consulta banco de dados buscando todos os dados da tabela usuarios 
     # ordenando pelo campo perfil e nome.
-    $query = "SELECT * FROM `pccsampledb`.`artigos` ORDER BY data_publicacao, status";
+    $query = "SELECT * FROM `pccsampledb`.`artigos` ORDER BY status, data_publicacao desc, status";
     $stmt = $dbh->prepare($query);
     
     # executa a consulta banco de dados e aguarda o resultado.

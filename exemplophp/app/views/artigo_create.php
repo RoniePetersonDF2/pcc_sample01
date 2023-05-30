@@ -29,13 +29,29 @@
         $status = isset($_POST['status']) ? $_POST['status'] : 0;
         
         $imagem_externa = ($_POST['tipoImagem'] == '1'? true: false);
-        $imagem  = isset($_POST['imagem_externa']) ? $_POST['imagem_externa'] : '';
+        $imagemName  = isset($_POST['imagem_externa']) ? $_POST['imagem_externa'] : '';
+        
+        # verifica se a imagem a ser cadastrada é interna? Se sim, entra no if.
         if($imagem_externa == false) {
-            $imagem = $_FILES['imagem_interna']["name"];
+            # definie o caminho onde sera gravado o arquivo.
+            $uploaddir = __DIR__ . '/assets/img/artigos/';
+            $imagemName = basename($_FILES['imagem_interna']['name']);
+            $uploadfile = $uploaddir . $imagemName;
+            
+            # verifica se o diretorio existe? Se não existir cria um novo.
+            if(!file_exists($uploaddir)) {
+                mkdir($uploaddir, 0777);
+            }
+            # recebe o arquivo a ser gravado e inserido no diretorio criado. 
+            # Se sim, gravano diretorio. Se não, limpa o nome da variavel que
+            # sera usada no banco de dados.
+            if(!move_uploaded_file($_FILES['imagem_interna']['tmp_name'], $uploadfile)){
+                $imagemName  = '';
+            }
         }
         
-        $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : '1';
-        $usuario = $_SESSION['usuario']['id'];
+        $categoriaId = isset($_POST['categoria']) ? $_POST['categoria'] : '1';
+        $usuarioId = $_SESSION['usuario']['id'];
         // echo '<pre>'; var_dump($usuario); exit;
         
         # cria um comando SQL para adicionar valores na tabela categorias 
@@ -46,10 +62,10 @@
         $stmt->bindParam(':titulo', $titulo);
         $stmt->bindParam(':texto', $texto);
         $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':imagem', $imagem);
+        $stmt->bindParam(':imagem', $imagemName);
         $stmt->bindParam(':imagem_externa', $imagem_externa);
-        $stmt->bindParam(':categoria_id', $categoria_id);
-        $stmt->bindParam(':usuario_id', $usuario_id);
+        $stmt->bindParam(':categoria_id', $categoriaId);
+        $stmt->bindParam(':usuario_id', $usuarioId);
 
         # executa o comando SQL para inserir o resultado.
         $stmt->execute();
@@ -60,6 +76,7 @@
         if($stmt->rowCount()) {
             header('location: artigo_index.php?success=Artigo inserido com sucesso!');
         } else {
+            echo '<pre>';var_dump($stmt->errorInfo()); exit;
             header('location: artigo_create.php?error=Erro ao inserir artigo!');
         }
     }
@@ -124,7 +141,7 @@
                     <br><br>
                     <div>
                         <label for="status">Status</label><br>
-                        <select name="status" <?php ($_SESSION['usuario']['perfil'] == 'EDI') ? 'disabled': '';?>>
+                        <select name="status" <?php echo ($_SESSION['usuario']['perfil'] == 'EDI') ? 'disabled': '';?>>
                             <option value="0">Em edição</option>
                             <option value="1">Publicado</option>
                         </select>
