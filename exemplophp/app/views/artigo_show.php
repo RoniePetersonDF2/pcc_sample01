@@ -116,7 +116,16 @@
         </header>
         <section class="artigo_show">
             <div>
-                <img alt="<?=$row['titulo'];?>" src="<?=$row['imagem'];?>">
+                <?php 
+                    if($row['imagem_externa'] && trim($row['imagem']) != '') {
+                        echo "<img alt='" . $row['titulo'] . "' src='" . $row['imagem'] . "'>";
+                    } elseif($row['imagem_externa'] == false && trim($row['imagem']) != '') {
+                        echo "<img alt='" . $row['titulo'] . "' src='" . $row['imagem'] . "'>";        
+                    } else {
+                        echo "<img alt='" . $row['titulo'] . "' src='assets/img/post.jpg'>";
+                    }               
+                ?>
+                
             </div>
             <p class="artigo_show__data">
                 <strong>Data Publicação: </strong>
@@ -129,13 +138,7 @@
         </section>
         <br>
         <br>
-        <section>
-            <button>Avaliar</button>
-        </section>
     </section>
-    
-    
-    
 </main>
 
 <!-- inclui o arquivo de rodape do site -->
