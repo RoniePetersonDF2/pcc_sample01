@@ -16,9 +16,6 @@
                     if (isset($_SESSION['usuario']) && $_SESSION['usuario']['perfil'] == 'ADM')  {
                         echo "<li><a href='usuario_admin.php'>Admin</a></li>";
                     } 
-                    if(isset($_SESSION['usuario']) && ($_SESSION['usuario']['perfil'] != 'USU')) {
-                        echo "<li><a href='artigo_index.php'>Artigos</a></li>";
-                    } 
                     if(isset($_SESSION['usuario']) && ($_SESSION['usuario']['perfil'] == 'ADM' || $_SESSION['usuario']['perfil'] == 'GER')) {
                         echo "<li><a href='categoria_index.php'>Categorias</a></li>";
                     } 
