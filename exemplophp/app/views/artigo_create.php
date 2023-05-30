@@ -24,18 +24,32 @@
     # verifica se os dados do formulario foram enviados via POST 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
         # cria variaveis (nome, status, tipo) para armazenar os dados passados via método POST.
-        $nome = isset($_POST['nome']) ? $_POST['nome'] : '';
+        $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : '';
+        $texto = isset($_POST['texto']) ? $_POST['texto'] : '';
         $status = isset($_POST['status']) ? $_POST['status'] : 0;
-        $tipo = isset($_POST['tipo']) ? $_POST['tipo'] : 'ART';
         
-
+        $imagem_externa = ($_POST['tipoImagem'] == '1'? true: false);
+        $imagem  = isset($_POST['imagem_externa']) ? $_POST['imagem_externa'] : '';
+        if($imagem_externa == false) {
+            $imagem = $_FILES['imagem_interna']["name"];
+        }
+        
+        $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : '1';
+        $usuario = $_SESSION['usuario']['id'];
+        // echo '<pre>'; var_dump($usuario); exit;
+        
         # cria um comando SQL para adicionar valores na tabela categorias 
-        $query = "INSERT INTO `pccsampledb`.`categorias` (`nome`,`status`, `tipo`)
-                    VALUES (:nome, :status, :tipo)";
+        $query = "INSERT INTO `pccsampledb`.`artigos` 
+                (`titulo`, `texto`, `status`, `imagem`, `imagem_externa`, `categoria_id`, `usuario_id`)
+                VALUES (:titulo, :texto, :status, :imagem, :imagem_externa, :categoria_id, :usuario_id)";
         $stmt = $dbh->prepare($query);
-        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':titulo', $titulo);
+        $stmt->bindParam(':texto', $texto);
         $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':tipo', $tipo);
+        $stmt->bindParam(':imagem', $imagem);
+        $stmt->bindParam(':imagem_externa', $imagem_externa);
+        $stmt->bindParam(':categoria_id', $categoria_id);
+        $stmt->bindParam(':usuario_id', $usuario_id);
 
         # executa o comando SQL para inserir o resultado.
         $stmt->execute();
@@ -44,9 +58,9 @@
         # se sim, redireciona para a pagina de admin com mensagem de sucesso.
         # se não, redireciona para a pagina de cadastro com mensagem de erro.
         if($stmt->rowCount()) {
-            header('location: categoria_index.php?success=Categoria inserido com sucesso!');
+            header('location: artigo_index.php?success=Artigo inserido com sucesso!');
         } else {
-            header('location: categoria_add.php?error=Erro ao inserir categoria!');
+            header('location: artigo_create.php?error=Erro ao inserir artigo!');
         }
     }
 
@@ -117,14 +131,39 @@
                     </div>
                     <br><br>
                     <div>
-                    <label for="imagem">Imagem</label><br>
-                        <input type="file" name="imagem">
+                        <label for="tipoImagem">Tipo de Imagem</label><br>
+                        <select name="tipoImagem" onchange="changeImagem(this);">
+                            <option value="0">Intena</option>
+                            <option value="1">Externa</option>
+                        </select>
                     </div>
+                    <br><br>
+                    <div>
+                        <label for="imagem">Imagem</label><br>
+                        <input type="file" name="imagem_interna" id="imagem_interna">
+                        <input type="text" name="imagem_externa" id="imagem_externa" style="display:none;">
+                        </div>
                     <br><br>
                     <input type="submit" value="Salvar" name="salvar">
                </form>
             </section>
             </div>
-    </main>    
+    </main>
+    
+    <script>        
+        function changeImagem(e) {
+            const listaValue = e.value;
+            const imagemExterna = document.getElementById('imagem_externa');
+            const imagemInterna = document.getElementById('imagem_interna');
+            
+            imagemExterna.style.display = "none";
+            imagemInterna.style.display = "";
+            if(listaValue == 1) {
+                imagemExterna.style.display = "";
+                imagemInterna.style.display = "none";
+                imagemInterna.value = "";
+            }
+        }
+    </script>
 </body>
 </html>

@@ -18,6 +18,12 @@
     margin-top: 10px;
 }
 
+.novo__form__section textarea {
+    border: 1px solid #035c97;
+    width: 100%;
+    margin-top: 10px;
+}
+
 .novo__form__section input[type="submit"] {
     border: 1px solid #035c97;
     background-color: #035c97;
