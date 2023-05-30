@@ -112,7 +112,7 @@
         </header>
         <?php if($rows) { foreach ($rows as $row){ ?>
             <article>
-                <a href="artigo_show.php?id=<?=$row['id'];?>">
+                <a href="#">
                      <?php
                         $imagem = $row['imagem'] == '' ? "assets/img/post.jpg" : $row['imagem'];                        
                      ?>   
