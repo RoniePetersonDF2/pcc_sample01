@@ -117,12 +117,14 @@
         <section class="artigo_show">
             <div>
                 <?php 
+                    $path =  'assets/img/artigos/';
                     if($row['imagem_externa'] && trim($row['imagem']) != '') {
                         echo "<img alt='" . $row['titulo'] . "' src='" . $row['imagem'] . "'>";
                     } elseif($row['imagem_externa'] == false && trim($row['imagem']) != '') {
-                        echo "<img alt='" . $row['titulo'] . "' src='" . $row['imagem'] . "'>";        
+                        $imagem = $path . $row['imagem'];
+                        echo "<img alt='" . $row['titulo'] . "' src='" . $imagem . "'>";        
                     } else {
-                        echo "<img alt='" . $row['titulo'] . "' src='assets/img/post.jpg'>";
+                        echo "<img alt='" . $row['titulo'] . "' src='assets/img/artigos/semimagem.jpg'>";
                     }               
                 ?>
                 

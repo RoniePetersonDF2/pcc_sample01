@@ -46,7 +46,9 @@
     
     # cria uma consulta banco de dados buscando todos os dados da tabela usuarios 
     # ordenando pelo campo perfil e nome.
-    $query = "SELECT * FROM `pccsampledb`.`artigos` ORDER BY status, data_publicacao desc, status";
+    $query = "SELECT art.*, cat.nome as categoria FROM `pccsampledb`.`artigos` art
+                INNER JOIN `pccsampledb`.`categorias` cat ON cat.id = art.categoria_id 
+                ORDER BY art.status, data_publicacao desc";
     $stmt = $dbh->prepare($query);
     
     # executa a consulta banco de dados e aguarda o resultado.
@@ -96,6 +98,7 @@
                                     <th>Nome</th>
                                     <th>Data Publicação</th>
                                     <th>Status</th>
+                                    <th>Categoria</th>
                                     <th>Ação</th>
                                 </tr>
                                 
@@ -112,6 +115,7 @@
                                             <td><?=$row['titulo']?></td>
                                             <td><?=date_format(date_create($row['data_publicacao']),'d/m/Y H:i')?></td>
                                             <td><?=($row['status'] == '1' ? 'Publicado': 'Em Edição')?></td>
+                                            <td><?=$row['categoria']?></td>
                                             <td>
                                                 <div style="display: flex;">
                                                     <a href="artigo_edit.php?id=<?=$row['id']?>" class="btn">Editar</a>&nbsp;
@@ -130,7 +134,7 @@
                                             </td>
                                         </tr>    
                                         <?php $count++;} } else {?>
-                                    <tr><td colspan="4"><strong>Não existem artigos cadastrados.</strong></td></tr>
+                                    <tr><td colspan="6"><strong>Não existem artigos cadastrados.</strong></td></tr>
                                 <?php }?>
                             </table>
 
