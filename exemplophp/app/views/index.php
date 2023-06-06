@@ -15,6 +15,7 @@
     # se foi passado via get quando o campo select do
     # formulario é modificado.    
     $filtroCategoria = isset($_GET['categoria']) ? $_GET['categoria'] : null;
+    $filtroTitulo = isset($_GET['filtro']) ? $_GET['filtro'] : null;
     
     
     # cria uma consulta banco de dados buscando todos os dados da tabela  
@@ -27,6 +28,9 @@
     # se sim adiciona condição ao select.
     if($filtroCategoria != null && $filtroCategoria != "0") {
         $query .= " AND cat.id = '" .$filtroCategoria . "' ";    
+    }
+    if($filtroTitulo != null && $filtroTitulo != "0") {
+        $query .= " AND art.titulo LIKE '%" .$filtroTitulo . "%' ";    
     }
 
     $query .= " ORDER BY art.data_publicacao DESC limit 10";
@@ -108,8 +112,23 @@
                         . "</option>";
                     }
                 ?>
-            </select>    
+            </select>
+
+            <section class="novo__form__filtar">
+                <form action="" method="get">
+                    <input 
+                        type="text" 
+                        name="filtro" 
+                        placeholder="Informe o nome do artigo a ser buscado." 
+                        class="novo__form__input__filtar"
+                        value="<?= isset($_GET['filtro'])?$_GET['filtro']:'';?>" 
+                        autofocus>
+                    <button type="submit" class="btn novo__form__btn__cadastrar">Buscar</button>
+                </form>
+            </section>
+        
         </header>
+        
         <?php if($rows) { foreach ($rows as $row){ ?>
             <article>
                 <a href="artigo_show.php?id=<?=$row['id'];?>">
@@ -124,7 +143,7 @@
                 <p><a href="#" class="category"><?=$row['titulo']?></a> || <a href="#" class="category"><?=$row['categoria']?></a></p>
                 <h2 class="title" title="<?=$row['texto']?>">
                     <?php 
-                        $max = 300;
+                        $max = 350;
                         echo substr($row['texto'], 1, (strlen($row['texto']) <= $max) ? strlen($row['texto']): $max) . '(...)'; 
                     ?>
                 </h2>
