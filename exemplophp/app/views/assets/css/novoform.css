@@ -53,3 +53,21 @@
 .novo__form__login a:hover {
     font-size: 1.1rem;
 } 
+
+.novo__form__cadastrar {
+    display: block;
+    width: 100%;
+    text-align: right;
+}
+
+.novo__form__btn__cadastrar {
+    min-height: 40px; 
+    margin-bottom: 10px;
+}
+
+.novo__form__input__filtar {
+    height: 35px;
+    border: 1px solid #035c97;
+    width: 63vw;
+    margin-top: 10px;
+}

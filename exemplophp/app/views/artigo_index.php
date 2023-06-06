@@ -44,11 +44,16 @@
         }
     } 
     
+    $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : null;
+    
     # cria uma consulta banco de dados buscando todos os dados da tabela usuarios 
     # ordenando pelo campo perfil e nome.
     $query = "SELECT art.*, cat.nome as categoria FROM `pccsampledb`.`artigos` art
-                INNER JOIN `pccsampledb`.`categorias` cat ON cat.id = art.categoria_id 
-                ORDER BY art.status, data_publicacao desc";
+                INNER JOIN `pccsampledb`.`categorias` cat ON cat.id = art.categoria_id ";
+    if($filtro) {
+        $query .= " WHERE art.titulo LIKE '%" . $filtro . "%' ";    
+    }
+    $query .= " ORDER BY art.status, data_publicacao desc";
     $stmt = $dbh->prepare($query);
     
     # executa a consulta banco de dados e aguarda o resultado.
@@ -82,17 +87,26 @@
 
             <div class="main_stage">
                 <div class="main_stage_content">
-                    <div>
-                        <button class="btn"
-                            style="min-height: 40px; margin-bottom: 10px;"
+                    <section class="novo__form__cadastrar">
+                        <button class="btn novo__form__btn__cadastrar"
                             onclick="javascript:window.location='artigo_create.php'"
                             >Novo Artigo</button>
-                    </div>
+                    </section>
+                    <section class="novo__form__filtar">
+                        <form action="" method="get">
+                            <input 
+                                type="text" 
+                                name="filtro" 
+                                placeholder="Informe o nome do artigo a ser buscado." 
+                                class="novo__form__input__filtar"
+                                value="<?= isset($_GET['filtro'])?$_GET['filtro']:'';?>" 
+                                autofocus>
+                            <button type="submit" class="btn novo__form__btn__cadastrar">Buscar</button>
+                        </form>
+                    </section>
                     <article>
                         <header>
-
-                            <table border="0" width="1300px" class="table">
-
+                            <table width="1300px" class="table">
                                 <tr>
                                     <th>#</th>
                                     <th>Nome</th>
