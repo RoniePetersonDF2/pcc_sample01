@@ -5,7 +5,7 @@
     # inclui os arquivos header, menu e login.
     require_once 'layouts/site/header.php';
     require_once 'layouts/site/menu.php';
-    // require_once 'login.php';
+    require_once 'login.php';
     require_once '../models/dao/CategoriaDAO.php';
     require_once '../models/dao/ArtigoDAO.php';
 
