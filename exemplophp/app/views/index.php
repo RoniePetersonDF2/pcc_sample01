@@ -5,62 +5,23 @@
     # inclui os arquivos header, menu e login.
     require_once 'layouts/site/header.php';
     require_once 'layouts/site/menu.php';
-    require_once 'login.php';
-    require_once "../database/conexao.php";
+    // require_once 'login.php';
+    require_once '../models/dao/CategoriaDAO.php';
+    require_once '../models/dao/ArtigoDAO.php';
 
-    # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
-    $dbh = Conexao::getInstance();
-    
     # cria variavel que recebe parametro da categoria
     # se foi passado via get quando o campo select do
     # formulario é modificado.    
     $filtroCategoria = isset($_GET['categoria']) ? $_GET['categoria'] : null;
     $filtroTitulo = isset($_GET['filtro']) ? $_GET['filtro'] : null;
     
+    $categoriaDAO = new CategoriaDAO();
+    $categorias = $categoriaDAO->listarTodasCategorias();
     
-    # cria uma consulta banco de dados buscando todos os dados da tabela  
-    # ordenando pelo campo data e limita o resultado a 10 registros.
-    $query = "SELECT art.*, cat.nome as categoria 
-                FROM `pccsampledb`.`artigos` AS art 
-                INNER JOIN `pccsampledb`.`categorias` AS cat ON cat.id = art.categoria_id
-                WHERE art.status = 1";
-    # verifica se existe filtro para categoria.
-    # se sim adiciona condição ao select.
-    if($filtroCategoria != null && $filtroCategoria != "0") {
-        $query .= " AND cat.id = '" .$filtroCategoria . "' ";    
-    }
-    if($filtroTitulo != null && $filtroTitulo != "0") {
-        $query .= " AND art.titulo LIKE '%" .$filtroTitulo . "%' ";    
-    }
-
-    $query .= " ORDER BY art.data_publicacao DESC limit 10";
-
-    $stmt = $dbh->prepare($query);
-    
-    # executa a consulta banco de dados e aguarda o resultado.
-    $stmt->execute();
-    
-    # Faz um fetch para trazer os dados existentes, se existirem, em um array na variavel $row.
-    # se não existir retorna null
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    # cria uma consulta banco de dados buscando todos os dados da tabela  
-    # ordenando pelo campo nome da categoria.
-    $query = "SELECT * 
-                FROM `pccsampledb`.`categorias` 
-                ORDER BY nome";
-    $stmt = $dbh->prepare($query);
-    
-    # executa a consulta banco de dados e aguarda o resultado.
-    $stmt->execute();
-    
-    # Faz um fetch para trazer os dados existentes, se existirem, em um array na variavel $row.
-    # se não existir retorna null
-    $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    # destroi a conexao com o banco de dados.
-    $dbh = null;
-?>
+    $artigoDAO = new ArtigoDAO();
+    $artigos = $artigoDAO->listarArtigosPorCategoriaOuTitulo($filtroCategoria, $filtroTitulo);
+    // echo '<pre>'; var_dump($artigos); exit;
+    ?>
 
 <!--DOBRA PALCO PRINCIPAL-->
 
@@ -129,7 +90,7 @@
         
         </header>
         
-        <?php if($rows) { foreach ($rows as $row){ ?>
+        <?php if($artigos) { foreach ($artigos as $row){ ?>
             <article>
                 <a href="artigo_show.php?id=<?=$row['id'];?>">
                      <?php
