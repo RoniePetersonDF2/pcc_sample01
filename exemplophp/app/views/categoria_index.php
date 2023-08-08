@@ -1,11 +1,6 @@
 <?php
     # para trabalhar com sessões sempre iniciamos com session_start.
     session_start();
-    
-    # inclui o arquivo header e a classe de conexão com o banco de dados.
-    require_once 'layouts/site/header.php';
-    require_once "../database/conexao.php";
-
     # verifica se existe sessão de usuario e se ele é administrador.
     # se não existir redireciona o usuario para a pagina principal com uma mensagem de erro.
     # sai da pagina.
@@ -13,55 +8,25 @@
         header("Location: index.php?error=Usuário não tem permissão para acessar esse recurso");
         exit;
     }
-
-    # cria a variavel $dbh que vai receber a conexão com o SGBD e banco de dados.
-    $dbh = Conexao::getInstance();
-
-     # verifica se os dados do formulario foram enviados via POST 
+ 
+    require_once "../controllers/CategoriaController.php";
+    $categoriaController = new CategoriaController();
+  
+    # verifica se os dados do formulario foram enviados via POST 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
         # recupera o id do enviado por post para delete ou update.
         $id = (isset($_POST['id']) ? $_POST['id'] : 0);
-        $operacao = (isset($_POST['botao']) ? $_POST['botao'] : null);
-        # verifica se o nome do botão acionado por post se é deletar ou atualizar
-        if($operacao === 'deletar'){
-            # cria uma query no banco de dados para excluir o usuario com id informado 
-            $query = "DELETE FROM `pccsampledb`.`categorias` WHERE id = :id";
-            $stmt = $dbh->prepare($query);
-            $stmt->bindParam(':id', $id);
-            
-            # executa a consulta banco de dados para excluir o registro.
-            $stmt->execute();
+        $categoriaController->apagar($id);
+    }
+    # chama controller para listar todas as categorias 
+    $rows = $categoriaController->listarTodas();
 
-            # verifica se a quantiade de registros excluido é maior que zero.
-            # se sim, redireciona para a pagina de admin com mensagem de sucesso.
-            # se não, redireciona para a pagina de admin com mensagem de erro.
-            if($stmt->rowCount()) {
-                header('location: categoria_index.php?success=Categoria excluída com sucesso!');
-            } else {
-                header('location: categoria_index.php?error=Erro ao excluir categoria!');
-            }
-        }
-
-    } 
-    # cria uma consulta banco de dados buscando todos os dados da tabela usuarios 
-    # ordenando pelo campo perfil e nome.
-    $query = "SELECT * FROM `pccsampledb`.`categorias` ORDER BY tipo, nome";
-    $stmt = $dbh->prepare($query);
-    
-    # executa a consulta banco de dados e aguarda o resultado.
-    $stmt->execute();
-    
-    # Faz um fetch para trazer os dados existentes, se existirem, em um array na variavel $row.
-    # se não existir retorna null
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-
-    # destroi a conexao com o banco de dados.
-    $dbh = null;
+    require_once 'layouts/site/header.php';
 ?>
+        
+    
 <body>
     <?php require_once 'layouts/admin/menu.php'; ?>
-
     <main>
     <?php
         # verifca se existe uma mensagem de erro enviada via GET.
@@ -93,7 +58,6 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nome</th>
-                                    <th>Tipo</th>
                                     <th>Status</th>
                                     <th>Ação</th>
                                 </tr>
@@ -109,7 +73,6 @@
                                         <tr>
                                             <td><?=$count?></td>
                                             <td><?=$row['nome']?></td>
-                                            <td><?=$row['tipo']?></td>
                                             <td><?=($row['status'] == '1' ? 'Ativo': 'Inativo')?></td>
                                             <td>
                                                 <div style="display: flex;">
@@ -127,20 +90,13 @@
                                             </td>
                                         </tr>    
                                         <?php $count++;} } else {?>
-                                    <tr><td colspan="4"><strong>Não existem categorias cadastradas.</strong></td></tr>
+                                    <tr><td colspan="3"><strong>Não existem categorias cadastradas.</strong></td></tr>
                                 <?php }?>
                             </table>
-
                         </header>
                     </article>
-
                 </div>
             </div>
-
-    </main>
-    <!--FIM DOBRA PALCO PRINCIPAL-->
-
+    </main>    <!--FIM DOBRA PALCO PRINCIPAL-->
 </body>
-
-
 </html>

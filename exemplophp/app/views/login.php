@@ -1,5 +1,5 @@
 <?php
-    require_once '../models/dao/LoginDAO.php';
+    require_once '../models/LoginDAO.php';
    
     # verifica se os dados do formulario foram passados via método POST.
     if($_SERVER['REQUEST_METHOD'] == 'POST') {

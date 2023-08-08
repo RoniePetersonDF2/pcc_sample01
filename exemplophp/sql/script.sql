@@ -22,8 +22,7 @@ CREATE TABLE pccsampledb.usuarios (
 CREATE TABLE pccsampledb.categorias (
     id              INTEGER PRIMARY KEY AUTO_INCREMENT,
     nome            VARCHAR(40) NOT NULL,
-    status          BOOLEAN NOT NULL DEFAULT TRUE,
-    tipo            CHAR(3) NOT NULL DEFAULT 'ART' COMMENT 'ART=Artigo\nCUR=Curso' 
+    status          BOOLEAN NOT NULL DEFAULT TRUE 
 );
 
 -- cria uma tabela chamada artigos com os campos: 
@@ -52,12 +51,12 @@ INSERT INTO pccsampledb.usuarios (id, email, password, nome, perfil, status)
 
 
 -- inserir dados na tabela de usuario. 
-INSERT INTO pccsampledb.categorias (id, nome, status, tipo)
-    VALUES (1, 'Banco de dados', true, 'ART'),
-            (2, 'Redes', true, 'ART'),
-            (3, 'Desenvolvimento', true, 'ART'),
-            (4, 'Jogos', true, 'ART'),
-            (5, 'HTML5 & CSS3', true, 'CUR');
+INSERT INTO pccsampledb.categorias (id, nome, status)
+    VALUES (1, 'Banco de dados', true),
+            (2, 'Redes', true),
+            (3, 'Desenvolvimento', true),
+            (4, 'Jogos', true),
+            (5, 'HTML5 & CSS3', true);
 
 -- inserir dados na tabela de artigos.
 INSERT INTO pccsampledb.artigos (titulo, status, data_publicacao, categoria_id, usuario_id, texto, imagem, imagem_externa) 

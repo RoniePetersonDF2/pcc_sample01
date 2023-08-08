@@ -6,17 +6,20 @@
     require_once 'layouts/site/header.php';
     require_once 'layouts/site/menu.php';
     require_once 'login.php';
-    require_once '../models/dao/CategoriaDAO.php';
-    require_once '../models/dao/ArtigoDAO.php';
-
+    require_once '../models/ArtigoDAO.php';
+    // require_once '../models/dao/CategoriaDAO.php';
+    require_once '../controllers/CategoriaController.php';
+    
+    $categoriaController = new CategoriaController();
+    $categorias = $categoriaController->listarTodas();
     # cria variavel que recebe parametro da categoria
     # se foi passado via get quando o campo select do
     # formulario é modificado.    
     $filtroCategoria = isset($_GET['categoria']) ? $_GET['categoria'] : null;
     $filtroTitulo = isset($_GET['filtro']) ? $_GET['filtro'] : null;
     
-    $categoriaDAO = new CategoriaDAO();
-    $categorias = $categoriaDAO->listarTodasCategorias();
+    // $categoriaDAO = new CategoriaDAO();
+    // $categorias = $categoriaDAO->listarTodasCategorias();
     
     $artigoDAO = new ArtigoDAO();
     $artigos = $artigoDAO->listarArtigosPorCategoriaOuTitulo($filtroCategoria, $filtroTitulo);
